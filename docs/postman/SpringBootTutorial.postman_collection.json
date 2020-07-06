@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "764ad7fb-e2df-4533-9544-5d2a36d87031",
+		"name": "SpringBootTutorial",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/:id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/:id",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "42"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Télévision\",\r\n    \"price\": 900.0,\r\n    \"currency\": \"EUR\",\r\n    \"buyingPrice\": 500.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API}}/products",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Télévision de luxe\",\r\n    \"price\": 1900.0,\r\n    \"currency\": \"EUR\",\r\n    \"buyingPrice\": 1100.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API}}/products",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/:id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/:id",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/priceGreaterThan/:priceLimit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 5,\r\n    \"name\": \"Télévision\",\r\n    \"price\": 900.0,\r\n    \"currency\": \"EUR\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API}}/products/priceGreaterThan/:priceLimit",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						"priceGreaterThan",
+						":priceLimit"
+					],
+					"variable": [
+						{
+							"key": "priceLimit",
+							"value": "1000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/searchNameLike",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/searchNameLike?nameLike=Table",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						"searchNameLike"
+					],
+					"query": [
+						{
+							"key": "nameLike",
+							"value": "Table"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/searchExpensiveProduct",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/searchExpensiveProduct?priceLimit=899",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						"searchExpensiveProduct"
+					],
+					"query": [
+						{
+							"key": "priceLimit",
+							"value": "899"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

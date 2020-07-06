@@ -3,6 +3,8 @@ package com.burgc.microcommerce.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,8 +17,13 @@ public class Product {
 	@Id
 	@GeneratedValue
 	private int id;
+	
+    @Size(min=3, max=20, message="The number of characters must be between 3 and 20.")
 	private String name;
+    
+    @Min(value=1)
 	private float price;
+    
 	private String currency;
 	// @JsonIgnore
 	private float buyingPrice;

@@ -3,6 +3,8 @@ package com.burgc.microcommerce.web.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
@@ -18,12 +20,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.burgc.microcommerce.dao.IProductDao;
-import com.burgc.microcommerce.model.Product;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import com.burgc.microcommerce.dao.IProductDao;
+import com.burgc.microcommerce.model.Product;
+import com.burgc.microcommerce.web.exceptions.ProductNotFoundException;
+
+@Api("API for products CRUD operations.")
 @RestController
 public class ProductController {
 	@Autowired
@@ -44,13 +52,18 @@ public class ProductController {
         return filteredProducts;
     }
 	
-	@GetMapping(value = "/products/{id}")
-	  public Product getProductById(@PathVariable int id) {
-	    return productDao.findById(id);
+	@ApiOperation(value="Get a product by its ID.")
+	@GetMapping(value="/products/{id}")
+	  public Product getProductById(@PathVariable int id) throws ProductNotFoundException {
+		Product product = productDao.findById(id);
+		
+		if (product == null) throw new ProductNotFoundException("Product with id " + id + " can not be found.");
+		
+	    return product;
 	}
 	
 	@PostMapping(value="/products")
-	public ResponseEntity<Void> postProduct(@RequestBody Product product) {
+	public ResponseEntity<Void> postProduct(@Valid @RequestBody Product product) {
 		Product addedPproduct = productDao.save(product);
 		
 		if(addedPproduct == null) {
