@@ -4,10 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@JsonIgnoreProperties(value = {"id", "buyingPrice"})
+// @JsonIgnoreProperties(value = {"id", "buyingPrice"})
+// @JsonFilter("myDynamicFilter")
 public class Product {
 	@Id
 	@GeneratedValue
@@ -15,6 +18,7 @@ public class Product {
 	private String name;
 	private float price;
 	private String currency;
+	// @JsonIgnore
 	private float buyingPrice;
 	
 	public Product() {
