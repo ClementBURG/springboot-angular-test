@@ -1,8 +1,10 @@
 package com.burgc.microcommerce.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
@@ -11,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@Table(name="OCTEST_PRODUCT")
 // @JsonIgnoreProperties(value = {"id", "buyingPrice"})
 // @JsonFilter("myDynamicFilter")
 public class Product {
@@ -21,10 +24,13 @@ public class Product {
     @Size(min=3, max=20, message="The number of characters must be between 3 and 20.")
 	private String name;
     
+    @Column(name="S_PRICE")
     @Min(value=1)
 	private float price;
     
 	private String currency;
+	
+	@Column(name="B_PRICE")
 	// @JsonIgnore
 	private float buyingPrice;
 	
