@@ -1,11 +1,16 @@
 package com.burgc.microcommerce.web.controller;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +34,7 @@ import io.swagger.annotations.ApiOperation;
 
 import com.burgc.microcommerce.dao.IProductDao;
 import com.burgc.microcommerce.model.Product;
+import com.burgc.microcommerce.web.exceptions.NegativeIncomeMarginException;
 import com.burgc.microcommerce.web.exceptions.ProductNotFoundException;
 
 @Api("API for products CRUD operations.")
@@ -38,7 +44,7 @@ public class ProductController {
     private IProductDao productDao;
 	
 	@RequestMapping(value="/products", method=RequestMethod.GET)
-    public MappingJacksonValue  getAllProducts() {
+    public MappingJacksonValue getAllProducts() {
         List<Product> products = productDao.findAll();
 
         SimpleBeanPropertyFilter myFilter = SimpleBeanPropertyFilter.serializeAllExcept("buyingPrice");
@@ -63,24 +69,28 @@ public class ProductController {
 	}
 	
 	@PostMapping(value="/products")
-	public ResponseEntity<Void> postProduct(@Valid @RequestBody Product product) {
-		Product addedPproduct = productDao.save(product);
+	public ResponseEntity<Void> postProduct(@Valid @RequestBody Product product) throws NegativeIncomeMarginException {
+		if(product.getIncomeMargin() < 0) throw new NegativeIncomeMarginException("Product with id " + product.getId() + " has a negative income margin.");
 		
-		if(addedPproduct == null) {
+		Product addedProduct = productDao.save(product);
+		
+		if(addedProduct == null) {
 			return ResponseEntity.noContent().build();
 		}
 		
 		URI location = ServletUriComponentsBuilder
 				.fromCurrentRequest()
 				.path("/{id}")
-				.buildAndExpand(addedPproduct.getId())
+				.buildAndExpand(addedProduct.getId())
 				.toUri();
 		
 		return ResponseEntity.created(location).build();
 	}
 	
 	@PutMapping(value="/products")
-	public void updateProduct(@RequestBody Product product) {
+	public void updateProduct(@Valid @RequestBody Product product) {
+		if(product.getIncomeMargin() < 0) throw new NegativeIncomeMarginException("Product with id " + product.getId() + " has a negative income margin.");
+		
 		productDao.save(product);
 	}
 	
@@ -102,5 +112,32 @@ public class ProductController {
 	@GetMapping(value="/products/searchExpensiveProduct")
     public List<Product> getExpensiveProduct(@RequestParam(name="priceLimit", required=true) float priceLimit) {
         return productDao.searchExpensiveProduct(priceLimit);
+    }
+	
+	@GetMapping(value="/products/calculateIncomeMargin")
+    public Map<String,Float> calculateIncomeMargin() {
+        Map<String, Float> incomeMargin = new HashMap<>();
+        
+        productDao.findAll().forEach(product -> {
+        	incomeMargin.put(product.toString() , product.getIncomeMargin());
+        });
+        
+        return incomeMargin;
+    }
+	
+	@RequestMapping(value="/products/alphabeticalOrder", method=RequestMethod.GET)
+    public MappingJacksonValue getAllProductsAlphabeticalOrder(@RequestParam(name="page", required=false, defaultValue="0") int page,
+    		@RequestParam(name="size", required=false, defaultValue="5") int size) {
+        Page<Product> products = productDao.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name")));
+
+        SimpleBeanPropertyFilter myFilter = SimpleBeanPropertyFilter.serializeAllExcept("buyingPrice");
+
+        FilterProvider filtersList = new SimpleFilterProvider().addFilter("myDynamicFilter", myFilter);
+
+        MappingJacksonValue filteredProducts = new MappingJacksonValue(products);
+
+        filteredProducts.setFilters(filtersList);
+
+        return filteredProducts;
     }
 }

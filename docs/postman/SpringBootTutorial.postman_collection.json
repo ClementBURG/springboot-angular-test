@@ -39,7 +39,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "42"
+							"value": "5"
 						}
 					]
 				}
@@ -79,7 +79,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Télévision de luxe\",\r\n    \"price\": 1900.0,\r\n    \"currency\": \"EUR\",\r\n    \"buyingPrice\": 1100.0\r\n}",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Télévision de luxe\",\r\n    \"price\": 900.0,\r\n    \"currency\": \"EUR\",\r\n    \"buyingPrice\": 1100.0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -152,7 +152,7 @@
 					"variable": [
 						{
 							"key": "priceLimit",
-							"value": "1000"
+							"value": "899"
 						}
 					]
 				}
@@ -165,7 +165,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{API}}/products/searchNameLike?nameLike=Table",
+					"raw": "{{API}}/products/searchNameLike?nameLike=T",
 					"host": [
 						"{{API}}"
 					],
@@ -176,7 +176,7 @@
 					"query": [
 						{
 							"key": "nameLike",
-							"value": "Table"
+							"value": "T"
 						}
 					]
 				}
@@ -201,6 +201,52 @@
 						{
 							"key": "priceLimit",
 							"value": "899"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/calculateIncomeMargin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/calculateIncomeMargin",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						"calculateIncomeMargin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/products/alphabeticalOrder",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API}}/products/alphabeticalOrder?page=0&size=2",
+					"host": [
+						"{{API}}"
+					],
+					"path": [
+						"products",
+						"alphabeticalOrder"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "2"
 						}
 					]
 				}

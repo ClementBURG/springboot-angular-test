@@ -84,6 +84,10 @@ public class Product {
 	public void setBuyingPrice(float buyingPrice) {
 		this.buyingPrice = buyingPrice;
 	}
+	
+    public float getIncomeMargin() {
+    	return this.price - this.buyingPrice;
+    }
 
 	@Override
 	public String toString() {
